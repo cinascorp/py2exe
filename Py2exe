@@ -1,0 +1,74 @@
+import tkinter as tk
+
+root = tk.Tk()
+
+root.title("Python to EXE")
+
+root.geometry("400x300")
+
+def browse_button():
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+    global folder_path
+    filename = tk.filedialog.askdirectory()
+    folder_path.set(filename)
+    print(filename)
+
+def browse_button2():
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+    global folder_path2
+    filename = tk.filedialog.askdirectory()
+    folder_path2.set(filename)
+    print(filename)
+
+def convert():
+    global folder_path
+    global folder_path2
+    global e
+    global e2
+    global e3
+    f = e.get()
+    icon = e2.get()
+    name = e3.get()
+    folder_path = folder_path.get()
+    folder_path2 = folder_path2.get()
+    print(f, icon, name)
+    # Use pyinstaller to convert
+    import subprocess
+    subprocess.call(['pyinstaller', '-F', '-w', '-i', icon, f])
+    # Move the newly created .exe file to the destination folder
+
+    import shutil
+    shutil.move(name+'.exe', folder_path2)
+
+label1 = tk.Label(root, text="Source")
+label1.pack()
+
+button2 = tk.Button(text="Browse", command=browse_button)
+button2.pack()
+
+folder_path = tk.StringVar()
+e = tk.Entry(root, textvariable=folder_path)
+e.pack()
+
+label2 = tk.Label(root, text="Icon")
+label2.pack()
+
+button3 = tk.Button(text="Browse", command=browse_button2)
+button3.pack()
+
+folder_path2 = tk.StringVar()
+e2 = tk.Entry(root, textvariable=folder_path2)
+e2.pack()
+
+label3 = tk.Label(root, text="Name")
+label3.pack()
+
+e3 = tk.Entry(root)
+e3.pack()
+
+button4 = tk.Button(text="Convert", command=convert)
+button4.pack()
+
+root.mainloop()
